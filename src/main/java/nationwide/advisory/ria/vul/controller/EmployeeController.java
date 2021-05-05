@@ -25,7 +25,7 @@ public class EmployeeController {
 	
 	@GetMapping
 	public String hello() {
-		return "...Application is up and running...";
+		return "Application is up and running";
 	}
 	
 	@PostMapping("/add")
