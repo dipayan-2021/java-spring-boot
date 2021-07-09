@@ -10,5 +10,6 @@ phases:
   - echo build completed successfully...
   
 artifacts:
- files:target/docker-spring-boot.jar
-  discard-paths: yes
+ files:
+ - target/docker-spring-boot.jar 
+discard-paths: yes
