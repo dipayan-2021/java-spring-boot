@@ -7,13 +7,19 @@ phases:
     commands:
     - echo docker info
     - docker info
+    
     - echo Logging in to Amazon ECR...
     - echo ${AWS_DEFAULT_REGION}
     - echo ${CODEBUILD_RESOLVED_SOURCE_VERSION}   
+    
     - aws --version
     - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com)
+    
     - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
     - IMAGE_URI=${REPOSITORY_URI}:${TAG}
+    
+    - docker pull 985509296439.dkr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI
+    - docker run -dp 8080:8080 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI
   build:
     commands:
     - echo Build started on `date`
