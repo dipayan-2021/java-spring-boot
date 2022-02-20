@@ -1,5 +1,4 @@
 version: 0.2 
- 
 phases: 
   pre_build: 
     commands: 
@@ -10,6 +9,8 @@ phases:
     - aws --version
     
     - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 985509296439.dkr.ecr.us-east-1.amazonaws.com
+    
+    - echo ECR login successful... 
   build: 
     commands: 
     - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
@@ -32,7 +33,6 @@ phases:
     - docker push $IMAGE_URI
     - echo push completed
     - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
-  
-  artifacts:
+artifacts:
   files:
   - imagedefinitions.json
