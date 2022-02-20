@@ -15,8 +15,7 @@ phases:
     commands: 
     - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
     #- IMAGE_URI=${REPOSITORY_URI}:${TAG}
-    #  invalid argument ":8d4ddeaf" for "-t, --tag" flag: invalid reference format
-    - IMAGE_URI=${REPOSITORY_URI}:latest
+    - IMAGE_URI=${REPOSITORY_URI}_${TAG}
     
     - echo Build started on `date`
     - echo $TAG
