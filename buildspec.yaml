@@ -26,7 +26,7 @@ phases:
     
     - echo image tagging started...
     
-    - docker build --tag $IMAGE_URI 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI  
+    - docker build --tag $IMAGE_URI .  
     
     - echo image Successfully tagged.
   post_build: 
@@ -35,7 +35,7 @@ phases:
     - echo Build completed on `date`
     - echo Pushing docker image
     
-    - docker push 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI
+    - docker push $IMAGE_URI
     
     - echo push completed
     - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $DOCKER_REPO:$TAG > imagedefinitions.json
