@@ -19,17 +19,17 @@ phases:
     - echo docker image build Successfully..
     
     - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-    - IMAGE_URI=$REPOSITORY_URI:$TAG
+    - IMAGE_URI=${REPOSITORY_URI}:$TAG
     
-    - echo $TAG
     - echo $IMAGE_URI
+    - echo $TAG
     
     - echo image tagging started...
     
-    - TAG_URI=985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI
+    - TAG_URI=985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$TAG
     - echo $TAG_URI
     
-    - docker build --tag $IMAGE_URI $TAG_URI 
+    - docker build --tag $TAG $TAG_URI 
     
     - echo image Successfully tagged.
     
