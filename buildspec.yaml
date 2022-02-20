@@ -14,17 +14,16 @@ phases:
   build: 
     commands: 
     - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-    - IMAGE_URI=$REPOSITORY_URI:$TAG
+    - echo $TAG
     
     - echo Build started on `date`
-    - echo $TAG
-    - echo $IMAGE_URI
     
     - mvn clean package -Ddockerfile.skip
-    - docker build --tag $IMAGE_URI .
-    #- docker pull 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI .
+    - echo docker image build Successfully
     
-    - echo docker image build successfully
+    - docker tag majanani/demo:0.0.1-SNAPSHOT 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/docker-spring-boot-ecr-repo
+    
+    - echo image Successfully tagged to 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/docker-spring-boot-ecr-repo
     
   post_build: 
     commands: 
@@ -34,10 +33,10 @@ phases:
     - echo Pushing docker image
     
     - docker image list
-    - docker push 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI
+    - docker push 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/docker-spring-boot-ecr-repo
     
     - echo push completed
-    - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
+    - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME docker-spring-boot-ecr-repo > imagedefinitions.json
 artifacts:
   files:
   - imagedefinitions.json
