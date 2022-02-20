@@ -1,0 +1,10 @@
+version: 1.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:us-east-1:985509296439:task-definition/docker-spring-boot-task:4"
+        LoadBalancerInfo:
+          ContainerName: "docker-spring-boot-container"
+          ContainerPort: "80"
+        PlatformVersion: "LATEST"

@@ -21,7 +21,7 @@ function employeeController($scope, $http) {
 		
 		$http({
             method: 'get',
-            url: '/nationwide/employee/all'
+            url: '/spring-boot/employee/all'
         }).then(
             function(res) { // success
                 $scope.employeeList = res.data;
@@ -67,7 +67,7 @@ function employeeController($scope, $http) {
     
     $scope.submitEmployee = function(employee) {
 	    
-        var url = '/nationwide/employee/';
+        var url = '/spring-boot/employee/';
 		if($scope.edit && !$scope.add){
 			url = url+ 'update';
 		}
@@ -87,7 +87,7 @@ function employeeController($scope, $http) {
 	     
         $http({
             method: 'post',
-            url: '/nationwide/employee/delete',
+            url: '/spring-boot/employee/delete',
             data: angular.toJson(employee),
             headers: {'Content-Type': 'application/json'}
          }).then(_success, _error);
