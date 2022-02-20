@@ -8,7 +8,7 @@ phases:
     - echo Logging in to Amazon ECR.... 
     - aws --version
     
-    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 985509296439.dkr.ecr.us-east-1.amazonaws.com
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
     
     - echo ECR login successful... 
   build: 
@@ -22,7 +22,7 @@ phases:
     
     - mvn clean package -Ddockerfile.skip
     - docker build --tag $IMAGE_URI .
-    - docker pull 985509296439.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_URI .
+    - docker pull 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI .
     
   post_build: 
     commands: 
@@ -30,7 +30,9 @@ phases:
     - echo Build completed on `date`
     - echo $(docker images)
     - echo Pushing docker image
-    - docker push $IMAGE_URI
+    
+    - docker push 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI .
+    
     - echo push completed
     - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
 artifacts:
