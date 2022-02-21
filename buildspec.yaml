@@ -3,8 +3,8 @@ phases:
   pre_build: 
     commands: 
     - echo docker info                          
-    - docker info 
-      
+    - docker info
+    
     - echo Logging in to Amazon ECR.... 
     - aws --version
     
@@ -38,7 +38,7 @@ phases:
     - docker push $IMAGE_URI
     
     - echo push completed
-    - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $DOCKER_REPO:$TAG > imagedefinitions.json
+    - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
 artifacts:
   files:
   - imagedefinitions.json
