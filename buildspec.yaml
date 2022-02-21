@@ -37,10 +37,11 @@ phases:
     - echo Pushing docker image
     
     #- docker push $IMAGE_URI
-    - docker push 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI .
+    - docker push 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI
     
     - echo push completed
     - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
 artifacts:
   files:
+  - appspec.yaml
   - imagedefinitions.json
