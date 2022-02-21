@@ -1,50 +1,33 @@
-version: 0.2 
-phases: 
-  pre_build: 
-    commands: 
-    - echo docker info                          
-    - docker info
-    
-    - echo Logging in to Amazon ECR.... 
-    - aws --version
-    
-    - ACCOUNT_URI=985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-    - echo $ACCOUNT_URI
-    
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ACCOUNT_URI
-    
-    - echo ECR login successful... 
-  build: 
-    commands: 
-    - printenv
-    - echo Build started on `date`
-    
-    - mvn clean package -Ddockerfile.skip
-    - echo docker image build Successfully..
-    
-    - ECR_REPO=public.ecr.aws/h7j1o7x6/docker-spring-boot-ecr-repo
-    - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-    - IMAGE_URI=$ECR_REPO:$TAG
-    
-    - echo $ECR_REPO
-    - echo $TAG
-    - echo $IMAGE_URI
-    
-    - echo image tagging started...
-    
-    - docker build --tag $ACCOUNT_URI/$IMAGE_URI . 
-    
-    - echo image Successfully tagged.
-  post_build: 
-    commands: 
-    - echo Build completed on `date`
-    - echo Pushing docker image
-    
-    - docker push $ACCOUNT_URI/$IMAGE_URI .
-    
-    - echo push completed
-    - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo docker info                          
+      - docker info
+      
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+      - IMAGE_URI=${REPOSITORY_URI}:${TAG}
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo $IMAGE_URI
+      - mvn clean package -Ddockerfile.skip
+      - docker build --tag $IMAGE_URI .
+  post_build:
+    commands:
+      - printenv
+      - echo Build completed on `date`
+      - echo $(docker images)
+      - echo Pushing docker image
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.eu-central-1.amazonaws.com
+      - docker push $IMAGE_URI
+      - echo push completed
+      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
 artifacts:
   files:
-  - appspec.yaml
-  #- imagedefinitions.json     
+    - imagedefinitions.json
