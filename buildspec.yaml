@@ -27,7 +27,7 @@ phases:
     - echo image tagging started...
     
     #- docker build --tag $IMAGE_URI .
-    - docker build --tag 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI .  
+    - docker build --tag 985509296439.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_URI  
     
     - echo image Successfully tagged.
   post_build: 
