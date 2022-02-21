@@ -40,11 +40,11 @@ phases:
     - echo Build completed on `date`
     - echo Pushing docker image
     
-    - docker push $ACCOUNT_URI/$IMAGE_URI
+    - docker push $ACCOUNT_URI/$IMAGE_URI .
     
     - echo push completed
     - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
 artifacts:
   files:
   - appspec.yaml
-  - imagedefinitions.json     
+  #- imagedefinitions.json     
