@@ -32,8 +32,7 @@ phases:
     
     - echo image tagging started...
     
-    - docker build -t $ECR_REPO . 
-    - docker tag $IMAGE_URI $ACCOUNT_URI/$IMAGE_URI 
+    - docker build --tag $ACCOUNT_URI/$IMAGE_URI . 
     
     - echo image Successfully tagged.
   post_build: 
@@ -47,4 +46,5 @@ phases:
     - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
 artifacts:
   files:
+  - appspec.yaml
   - imagedefinitions.json     
