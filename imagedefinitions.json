@@ -1,0 +1,6 @@
+[
+{
+"name": "docker-spring-boot-container",
+"imageUri": "985509296439.dkr.ecr.us-east-1.amazonaws.com/ecr-repo:latest"
+}
+]
