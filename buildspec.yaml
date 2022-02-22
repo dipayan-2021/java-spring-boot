@@ -13,12 +13,15 @@ phases:
       - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
       #- IMAGE_URI=${REPOSITORY_URI}:${TAG}
       - IMAGE_URI=${REPOSITORY_URI}:latest
+      
+      - echo $TAG
   build:
     commands:
       - echo Build started on `date`
       - echo $IMAGE_URI
       - mvn clean package -Ddockerfile.skip
       - docker build --tag $IMAGE_URI .
+      - echo image build completed...
   post_build:
     commands:
       - printenv
@@ -27,7 +30,7 @@ phases:
       - echo Pushing docker image
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 985509296439.dkr.ecr.us-east-1.amazonaws.com
       - docker push $IMAGE_URI
-      - echo push completed
+      - echo image push completed
       #- printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
       #- cat imagedefinitions.json
 artifacts:
